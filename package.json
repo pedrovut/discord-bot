@@ -1,11 +1,11 @@
 {
   "name": "discordbot",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "",
   "main": "./src/index.js",
   "scripts": {
     "start": "node --env-file=.env ./src/index.js",
-    "dev": "node ./src/deployCommands.js"
+    "deploy": "node ./src/deployCommands.js"
   },
   "keywords": [],
   "author": "",
