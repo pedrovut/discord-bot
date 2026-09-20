@@ -10,12 +10,27 @@ module.exports = {
         .setName("comando")
         .setDescription("O comando a ser recarregado.")
         .setRequired(true),
+    )
+    .addStringOption((option) =>
+      option
+        .setName("categoria")
+        .setDescription("Categoria do comando.")
+        .setRequired(true),
     ),
 
   async execute(interaction) {
     const commandName = interaction.options
       .getString("comando", true)
       .toLowerCase();
+
+    const categoryName = interaction.options
+      .getString("categoria", true)
+      .toLowerCase();
+
+    const categorias = {
+      utils: "utility",
+      dev: "devstuff",
+    };
 
     const command = interaction.client.commands.get(commandName);
 
@@ -26,13 +41,13 @@ module.exports = {
       });
     }
 
-    delete require.cache[require.resolve(`./${command.data.name}.js`)];
+    delete require.cache[require.resolve(`../${categorias[categoryName]}/${command.data.name}.js`)];
 
     try {
-      const newCommand = require(`./${command.data.name}.js`);
+      const newCommand = require(`../${categorias[categoryName]}/${command.data.name}.js`);
       interaction.client.commands.set(newCommand.data.name, newCommand);
       await interaction.reply(
-        `Command \`${newCommand.data.name}\` foi recarregado.`,
+        `Comando \`${newCommand.data.name}\` foi recarregado.`,
       );
     } catch (err) {
       console.error(err);

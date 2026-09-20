@@ -4,6 +4,7 @@ module.exports = {
   name: Events.InteractionCreate,
   async execute(interaction) {
     if (!interaction.isChatInputCommand()) return;
+
     const command = interaction.client.commands.get(interaction.commandName);
     const { cooldowns } = interaction.client;
 
@@ -42,6 +43,7 @@ module.exports = {
 
     timestamps.set(interaction.user.id, now);
     setTimeout(() => timestamps.delete(interaction.user.id), cooldownAmount);
+    
     try {
       await command.execute(interaction);
     } catch (error) {
