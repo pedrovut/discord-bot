@@ -1,4 +1,6 @@
 require("dotenv").config();
+const { guild_id, client_id } = require("../config.json");
+
 const { REST, Routes } = require("discord.js");
 const fs = require("node:fs");
 const path = require("node:path");
@@ -32,10 +34,7 @@ const rest = new REST().setToken(process.env.CLIENT_TOKEN);
     console.log(`? > Carregando ${commands.length} comandos...`);
 
     const data = await rest.put(
-      Routes.applicationGuildCommands(
-        process.env.CLIENT_ID,
-        process.env.GUILD_ID,
-      ),
+      Routes.applicationGuildCommands(client_id, guild_id),
       { body: commands },
     );
 
