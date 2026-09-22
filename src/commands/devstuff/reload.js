@@ -15,7 +15,11 @@ module.exports = {
       option
         .setName("categoria")
         .setDescription("Categoria do comando.")
-        .setRequired(true),
+        .setRequired(true)
+        .addChoices(
+          { name: "Utilidades", value: "utils" },
+          { name: "Ferramentas do Desenvolvedor", value: "dev" },
+        ),
     ),
 
   async execute(interaction) {
@@ -27,7 +31,7 @@ module.exports = {
       .getString("categoria", true)
       .toLowerCase();
 
-    const categorias = {
+    const categories = {
       utils: "utility",
       dev: "devstuff",
     };
@@ -41,10 +45,16 @@ module.exports = {
       });
     }
 
-    delete require.cache[require.resolve(`../${categorias[categoryName]}/${command.data.name}.js`)];
-
     try {
-      const newCommand = require(`../${categorias[categoryName]}/${command.data.name}.js`);
+      delete require.cache[
+        require.resolve(
+          `../${categories[categoryName]}/${command.data.name}.js`,
+        )
+      ];
+
+      const newCommand = require(
+        `../${categories[categoryName]}/${command.data.name}.js`,
+      );
       interaction.client.commands.set(newCommand.data.name, newCommand);
       await interaction.reply(
         `Comando \`${newCommand.data.name}\` foi recarregado.`,
@@ -52,7 +62,7 @@ module.exports = {
     } catch (err) {
       console.error(err);
       await interaction.reply(
-        `Ocorreu um erro ao executar o comando \`${command.data.name}\`:\n\`${error.message}\``,
+        `O comando **${commandName}** não existe ou não foi encontrado em **${categoryName}**.`,
       );
     }
   },

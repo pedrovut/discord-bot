@@ -12,5 +12,4 @@ client.cooldowns = new Collection();
 
 events.run(client);
 
-console.log("Comandos carregados na memória:", client.commands.map(c => c.data.name));
 client.login(process.env.CLIENT_TOKEN);
