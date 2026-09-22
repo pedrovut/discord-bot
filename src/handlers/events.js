@@ -1,14 +1,12 @@
 const path = require("node:path");
 const fs = require("node:fs");
 
-const { Collection } = require("discord.js");
-
 const eventsPath = path.join(__dirname, "..", "events");
 const eventFiles = fs
   .readdirSync(eventsPath)
   .filter((file) => file.endsWith(".js"));
 
-function runEvent(client) {
+function run(client) {
   for (const file of eventFiles) {
     const filePath = path.join(eventsPath, file);
     const event = require(filePath);
@@ -21,4 +19,4 @@ function runEvent(client) {
   }
 }
 
-module.exports = { runEvent };
+module.exports = { run };
